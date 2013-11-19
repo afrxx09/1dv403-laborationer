@@ -6,14 +6,15 @@ window.onload = function(){
 	var convertString = function(str){
 		// Plats för förändring.		
 		// Returnera den konverterade strängen.
-		// Vid fel, kasta ett undantag med ett meddelande till användaren. 
-	
+		// Vid fel, kasta ett undantag med ett meddelande till användaren.
 
-
-
-
-
-
+		if(str.length === 0) throw {'message':'Tom sträng'};
+		var strReturn = '';
+		for(var i in str){
+			strReturn += (str.charAt(i).toUpperCase() === str.charAt(i)) ? str.charAt(i).toLowerCase() : str.charAt(i).toUpperCase();
+		}
+		strReturn = strReturn.replace(/a/gi, '#');
+		return strReturn;
 	};
 	// ------------------------------------------------------------------------------
 

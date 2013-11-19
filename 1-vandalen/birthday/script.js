@@ -1,17 +1,17 @@
 "use strict";
 
 window.onload = function(){
-
-	
 	var birthday = function(date){
-		
-
-
-			// Din kod här.
-
-
-
-
+		var regex = /\d{4}\-\d{2}\-\d{2}/;
+		if(!regex.test(date)){
+			throw {'message': 'Felaktigt datum-format'};
+		}
+		else{
+			var arrDate = date.split('-');
+			var objDate = new Date(arrDate[0],(arrDate[1]-1),arrDate[2]);
+			var objNow	= new Date();
+			return Math.ceil((objDate.getTime() - objNow.getTime()) / (1000 * 60 * 60 * 24));
+		}
 	};
 	// ------------------------------------------------------------------------------
 
