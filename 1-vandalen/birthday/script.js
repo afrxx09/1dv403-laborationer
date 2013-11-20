@@ -3,14 +3,15 @@
 window.onload = function(){
 	var birthday = function(date){
 		var regex = /\d{4}\-\d{2}\-\d{2}/;
+		var reg = /\d{4}/; //<--123345435 
 		if(!regex.test(date)){
 			throw {'message': 'Felaktigt datum-format'};
 		}
 		else{
 			var arrDate		= date.split('-');
 			var currDate	= new Date();
-			var birthday	= new Date(currDate.getFullYear(),(arrDate[1]-1),arrDate[2]);
-			if((currDate.getTime() - birthday.getTime()) > 0){
+			var birthday	= new Date(currDate.getFullYear(), (arrDate[1]-1), arrDate[2]);
+			if(currDate.getTime() > birthday.getTime() && currDate.getDate() !== birthday.getDate()){
 				birthday.setFullYear(currDate.getFullYear() + 1);
 			}
 			return Math.ceil((birthday.getTime() - currDate.getTime()) / (1000 * 60 * 60 * 24));
