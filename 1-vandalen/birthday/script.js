@@ -7,10 +7,13 @@ window.onload = function(){
 			throw {'message': 'Felaktigt datum-format'};
 		}
 		else{
-			var arrDate = date.split('-');
-			var objDate = new Date(arrDate[0],(arrDate[1]-1),arrDate[2]);
-			var objNow	= new Date();
-			return Math.ceil((objDate.getTime() - objNow.getTime()) / (1000 * 60 * 60 * 24));
+			var arrDate		= date.split('-');
+			var currDate	= new Date();
+			var birthday	= new Date(currDate.getFullYear(),(arrDate[1]-1),arrDate[2]);
+			if((currDate.getTime() - birthday.getTime()) > 0){
+				birthday.setFullYear(currDate.getFullYear() + 1);
+			}
+			return Math.ceil((birthday.getTime() - currDate.getTime()) / (1000 * 60 * 60 * 24));
 		}
 	};
 	// ------------------------------------------------------------------------------
