@@ -31,7 +31,7 @@ var makePerson = function(persArr){
 	return {'minAge' : minAge, 'maxAge' : maxAge, 'averageAge' : averageAge, 'names' : sortedNames};
 }
 
-var data = [{name: "John Häggerud", age: 37}, {name: "Johan Leitet", age: 36}, {name: "Mats Loock", age: 46}];
+var data = [{name: "John Häggerud", age: 37}, {name: "Johan Leitet", age: 36}, {name: "Mats Loock", age: 46}, {name: "Kalle", age: 20}];
 
 var result = makePerson(data);
 

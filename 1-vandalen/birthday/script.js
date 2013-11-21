@@ -3,7 +3,6 @@
 window.onload = function(){
 	var birthday = function(date){
 		var regex = /\d{4}\-\d{2}\-\d{2}/;
-		var reg = /\d{4}/; //<--123345435 
 		if(!regex.test(date)){
 			throw {'message': 'Felaktigt datum-format'};
 		}

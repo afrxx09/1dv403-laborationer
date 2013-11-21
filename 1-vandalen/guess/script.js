@@ -1,5 +1,5 @@
 "use strict";
-
+/*
 function Bind(elem, t, f){
 	if(elem.addEventListener){
 		elem.addEventListener(t,f,false);
@@ -77,7 +77,7 @@ window.onload = function(){
 	guessNumber.Init(100);
 };
 
-/*
+*/
 window.onload = function(){
 	
 	//var secret = 50; // Detta tal behöver bytas ut mot ett slumpat tal.
@@ -146,4 +146,3 @@ window.onload = function(){
 	
 	});
 };
-*/
