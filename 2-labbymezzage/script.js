@@ -8,6 +8,53 @@ function Bind(elem, t, f){
 }
 
 var LM = {
+	objLabby : {},
+	
+	Init : function(){
+		new Labby();
+		//this.objLabby = new Labby();
+		//this.CreateDom();
+		//this.Bind();
+	},
+	
+	CreateDom : function(){
+		var elemWrap = document.createElement('div');
+		var btnSend = document.createElement('button');
+		var btnText = document.createTextNode('Send');
+		btnSend.appendChild(btnText);
+		elemWrap.appendChild(btnSend);
+		document.body.appendChild(elemWrap);
+		this.arrElems.sendButton = btnSend;
+	},
+	
+	Bind : function(){
+		var self = this;
+		Bind(this.arrElems.sendButton, 'click', function(){
+			self._addMessage.call(self, 'hej');
+			console.log(self.objLabby);
+		});
+	},
+	
+	_updateMessageCount : function(){
+		this.arrElems.messageCount.innerHTML = this.objLabby.GetMessageCount();
+	},
+	
+	_addMessage : function(strText){
+		var strText = this.arrElems.messageText.value
+		try{
+			this.objLabby.AddMessage(strText);
+			this._updateMessageCount();
+			this.arrElems.messageText.value = '';
+		}
+		catch(e){
+			alert('Kunde inte spara meddelande');
+		}
+	}
+}
+
+/*
+	//v0.1
+var LM = {
 	arrMessages : [],
 	btns : {
 		sendButton			: 'send-button',
@@ -87,7 +134,11 @@ var LM = {
 		alert(this.arrMessages[messageId].getDateText());
 	}
 }
-
+*/
 window.onload = function(){
-	var test = LM.Init();
+	var btnStart = document.getElementById('start');
+	Bind(btnStart, 'click', function(){
+		LM.Init();
+	});
+	//var test = LM.Init();
 }
