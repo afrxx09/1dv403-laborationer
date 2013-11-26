@@ -15,43 +15,35 @@ html, body{
 
 .wrap{
 	width:600px;
-	margin: 0 auto;
-}
-
-.main-container{
+	margin: 0 auto 20px;
 	border:1px solid black;
-	width:578px;
-	backgrund-color:#f00;
+	background-color:#fff;
 	padding:10px;
+	clear:both;
 }
 
-.message-container{
-	border:1px solid black;
-	background-color:#0f0;
-	min-height:25px;
+.message{
+	padding:5px;
 	margin-bottom:10px;
-	padding:10px 10px 0 10px;
+	background-color:#06f;
+	color:#fff;
 }
-	.message{
-		padding:5px;
-		margin-bottom:10px;
-		border:1px solid pink;
-		background-color:purple;
-	}
-	.delete-icon{
-		float:right;
-		width:16px;
-		height:16px;
-		background-color:red;
-	}
-	.time-icon{
-		float:right;
-		width:16px;
-		height:16px;
-		background-color:blue;
-	}
+.delete-icon{
+	float:right;
+	width:16px;
+	height:16px;
+	background-image: url('delete.png');
+	background-repeat:no-repeat;
+}
+.time-icon{
+	float:right;
+	width:16px;
+	height:16px;
+	background-image: url('clock.png');
+	background-repeat:no-repeat;
+}
 	
-.counter-container{
+.count{
 	color:#666;
 	font-size:12px;
 	font-style:italic;
@@ -59,22 +51,26 @@ html, body{
 }
 
 .message-box{
-	width:566px;;
 	padding:5px;
-	height:200px;
+	height:100px;
+	width:586px;
 	font-size:16px;
 	background-color:#fff;
+	border:1px solid black;
 	margin-bottom:10px;
 }
 
 .message-box:focus{
-	background-color:#ccc;
+	background-color:#def;
+	border:1px solid #06f;
+	outline:none;
 }
 
 .send-button{
-	border-radius: 4px;
-	background-color:#99f;
-	border:1px solid black;
-	padding:5px 20px;
+	background-color:#06f;
+	border:1px solid #fff;
+	padding:5px 30px;
 	float:right;
+	color:#fff;
+	font-weight:bold;
 }

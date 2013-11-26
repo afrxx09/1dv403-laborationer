@@ -7,6 +7,15 @@ function Bind(elem, t, f){
 	}
 }
 
+//v3.0
+var LM = {
+	Init : function(){
+		new Labby();
+	}
+}
+
+/*
+//v0.2
 var LM = {
 	objLabby : {},
 	
@@ -51,7 +60,7 @@ var LM = {
 		}
 	}
 }
-
+*/
 /*
 	//v0.1
 var LM = {
