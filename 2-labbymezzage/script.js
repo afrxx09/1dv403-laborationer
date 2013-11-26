@@ -8,9 +8,61 @@ function Bind(elem, t, f){
 }
 
 //v3.0
-var LM = {
+var myApp = {
+	arrLabbys : new Array(),
 	Init : function(){
-		new Labby();
+		this.Bind();
+	},
+	
+	Bind : function(){
+		var self = this;
+		var btnStartLabby = document.getElementById('start-labby');
+		Bind(btnStartLabby, 'click', function(){
+			self.StartNewLabby.call(self);
+		});
+		Bind(document.body, 'click', function(e){
+			var target = e.target;
+			if(target.className.indexOf('close') !== -1){
+				e.stopPropagation();
+				var win = target.parentNode.parentNode;
+				self.CloseWindow(win);
+			}
+		});
+	},
+	
+	StartNewLabby : function(){
+		var elem = this.CreateProgramWindow(this.arrLabbys.length);
+		this.arrLabbys.push(new Labby(elem));
+	},
+	
+	CreateProgramWindow : function(i){
+		var elem = document.createElement('div');
+		elem.setAttribute('class', 'program');
+		elem.setAttribute('id', 'labby-' + i);
+		
+		var header = document.createElement('div');
+		header.setAttribute('class', 'header');
+		var closeButton = document.createElement('span');
+		closeButton.setAttribute('class', 'close');
+		var headerText = document.createTextNode('Labby(' + i + ')');
+		header.appendChild(closeButton);
+		header.appendChild(headerText);
+		
+		var container = document.createElement('div');
+		container.setAttribute('class', 'window');
+		
+		elem.appendChild(header);
+		elem.appendChild(container);
+		
+		document.body.appendChild(elem);
+		
+		return container;
+	},
+	
+	CloseWindow : function(win){
+		var id = win.getAttribute('id').replace('labby-','')
+		this.arrLabbys.splice(id, 1);
+		win.remove(0);
 	}
 }
 
@@ -145,9 +197,12 @@ var LM = {
 }
 */
 window.onload = function(){
+	myApp.Init();
+	/*
 	var btnStart = document.getElementById('start');
 	Bind(btnStart, 'click', function(){
 		LM.Init();
 	});
+	*/
 	//var test = LM.Init();
 }

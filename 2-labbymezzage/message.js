@@ -16,7 +16,7 @@ function Message(strMsg, objDate){
 }
 
 Message.prototype.toString = function(){
-	
+	return this.getText() + '(' + this.getDateObj() + ')';
 }
 
 Message.prototype.getHTMLText = function(){
@@ -27,4 +27,12 @@ Message.prototype.getHTMLText = function(){
 Message.prototype.getDateText = function(){
 	var d = this.getDateObj();
 	return 'Inlägget skapades den ' + d.toLocaleString();
+}
+Message.prototype.getTimeStamp = function(){
+	var d,h,m,s;
+	d = this.getDateObj();
+	h = (d.getHours() > 9) ? d.getHours() : '0' + d.getHours();
+	m = (d.getMinutes() > 9) ? d.getMinutes() : '0' + d.getMinutes();
+	s = (d.getSeconds() > 9) ? d.getSeconds() : '0' + d.getSeconds();
+	return h + ':' + m + ':' + s;
 }
