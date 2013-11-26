@@ -1,3 +1,5 @@
+"use strict";
+
 function Bind(elem, t, f){
 	if(elem.addEventListener){
 		elem.addEventListener(t,f,false);
@@ -7,7 +9,93 @@ function Bind(elem, t, f){
 	}
 }
 
-//v3.0
+function StopProp(e){
+	if(e.stopPropagation){
+		e.stopPropagation();
+	}
+	else{
+		e.cancelBubble = true;
+	}
+}
+
+function PrevDef(e){
+	if(e.preventDefault){
+		e.preventDefault();
+	}
+	else{
+		e.returnValue = false;
+	}
+}
+
+var myApp = {
+	arrPrograms : new Array(),
+	Init : function(){
+		this.Bind();
+	},
+	
+	Bind : function(){
+		var self = this;
+		var btnStartLabby = document.getElementById('start-labby');
+		Bind(btnStartLabby, 'click', function(e){
+			StopProp(e);
+			self.StartNewLabby();
+		});
+		Bind(document.body, 'click', function(e){
+			StopProp(e);
+			var target, targetClass;
+			target = e.target;
+			targetClass = target.getAttribute('class');
+			if(targetClass.indexOf('close') !== -1){
+				var win = target.parentNode.parentNode;
+				self.CloseWindow(win);
+			}
+		});
+		
+		/**/
+		var b = document.getElementById('show-labbys');
+		Bind(b, 'click', function(e){
+			StopProp(e);
+			console.log(self.arrPrograms);
+		});
+	},
+	
+	StartNewLabby : function(){
+		var elem = this.CreateProgramWindow();
+		this.arrPrograms.push(new Labby2(elem));
+	},
+	
+	CreateProgramWindow : function(){
+		var id = this.arrPrograms.length;
+		var elem = document.createElement('div');
+		elem.setAttribute('class', 'program');
+		elem.setAttribute('id', 'labby-' + id);
+		
+		var header = document.createElement('div');
+		header.setAttribute('class', 'header');
+		var closeButton = document.createElement('span');
+		closeButton.setAttribute('class', 'close');
+		var headerText = document.createTextNode('Labby(' + id + ')');
+		header.appendChild(closeButton);
+		header.appendChild(headerText);
+		
+		var container = document.createElement('div');
+		container.setAttribute('class', 'window');
+		
+		elem.appendChild(header);
+		elem.appendChild(container);
+		
+		document.body.appendChild(elem);
+		
+		return container;
+	},
+	
+	CloseWindow : function(win){
+		var id = win.getAttribute('id').replace('labby-','')
+		this.arrPrograms[id] = null;
+		win.parentNode.removeChild(win);
+	}
+}
+/*
 var myApp = {
 	arrLabbys : new Array(),
 	Init : function(){
@@ -65,7 +153,7 @@ var myApp = {
 		win.remove(0);
 	}
 }
-
+*/
 /*
 //v0.2
 var LM = {

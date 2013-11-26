@@ -9,7 +9,6 @@ function Message(strMsg, objDate){
 	this.getDateObj = function(){
 		return objDate;
 	}
-	
 	this.setDateObj = function(_date){
 		objDate = _date();
 	}

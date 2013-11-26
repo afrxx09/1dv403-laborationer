@@ -1,90 +1,8 @@
-/*v0.3*/
 function Labby(target){
-	var self, _bind, _createDom, arrElems, arrMessages;
-	self = this;
-	/*
-	_createDom = function(){
-		var elemWrap	= document.createElement('div');
-		var elemCont	= document.createElement('div');
-		
-		var elemCountP	= document.createElement('div');
-		var txtCountP	= document.createTextNode('Antal meddelanden: ');
-		var elemCount	= document.createElement('span');
-		var txtCount	= document.createTextNode('0');
-		
-		var elemText	= document.createElement('textarea');
-		var elemTextWrap = document.createElement('div');
-		var btnSend		= document.createElement('button');
-		var btnText		= document.createTextNode('Send');
-		
-		var elemClear	= document.createElement('div');
-		
-		elemWrap.appendChild(elemCont);
-		
-		elemCount.appendChild(txtCount);
-		elemCountP.appendChild(txtCountP);
-		elemCountP.appendChild(elemCount);
-		elemCountP.className = 'count';
-		elemWrap.appendChild(elemCountP);
-		
-		elemText.className = 'message-box';
-		elemTextWrap.className = '';
-		elemTextWrap.appendChild(elemText);
-		elemWrap.appendChild(elemTextWrap);
-		
-		
-		btnSend.className = 'send-button';
-		btnSend.appendChild(btnText);
-		elemWrap.appendChild(btnSend);
-		
-		elemClear.className = 'clear';
-		elemWrap.appendChild(elemClear);
-		
-		elemWrap.className = 'wrap';
-		target.appendChild(elemWrap);
-		
-		self.arrElems.sendButton = btnSend;
-		self.arrElems.messageText = elemText;
-		self.arrElems.messageContainer = elemCont;
-		self.arrElems.messageCount = elemCount;
-	};
-	*/
-	/*
-	_binds() = function(){
-		Bind(self.arrElems.sendButton, 'click', function(){
-			self.AddMessage.call(self);
-		});
-		Bind(self.arrElems.messageContainer, 'click', function(e){
-			var target = e.target;
-			if(target.className.indexOf('delete-icon') !== -1){
-				self.DeleteMessage.call(self, target);
-			}
-			if(target.className.indexOf('time-icon') !== -1){
-				self.ShowTimeStamp.call(self, target);
-			}
-		});
-		Bind(self.arrElems.messageText, 'keypress', function(e){
-			if(!e.shiftKey && e.keyCode === 13){
-				e.preventDefault();
-				self.AddMessage.call(self);
-			}
-		});
-	};
-	*/
-	this.arrElems = this.CreateDom(target);
 	this.arrMessages = new Array();
+	this.arrElems = this.CreateDom(target);
 	this.Binds();
-	/*
-	this.arrElems = {
-		sendButton : btnSend,
-		messageText : elemText,
-		messageContainer : elemCont,
-		messageCount : elemCount
-	}
-	_createDom();
-	_binds();
-	*/
-}
+};
 
 Labby.prototype.AddMessage = function(){
 	var strText = this.arrElems.messageText.value;
@@ -93,7 +11,7 @@ Labby.prototype.AddMessage = function(){
 	}
 	this.arrElems.messageText.value = '';
 	this.arrMessages.push(new Message(strText, new Date()));
-	this.RenderMessages();
+	this.arrElems.messageContainer.appendChild(this.RenderMessage(this.arrMessages.length-1));
 	this.UpdateCount();
 }
 
@@ -204,21 +122,21 @@ Labby.prototype.CreateDom = function(target){
 Labby.prototype.Binds = function(){
 	var self = this;
 	Bind(this.arrElems.sendButton, 'click', function(){
-		self.AddMessage.call(self);
+		self.AddMessage();
 	});
 	Bind(this.arrElems.messageContainer, 'click', function(e){
 		var target = e.target;
 		if(target.className.indexOf('delete-icon') !== -1){
-			self.DeleteMessage.call(self, target);
+			self.DeleteMessage(target);
 		}
 		if(target.className.indexOf('time-icon') !== -1){
-			self.ShowTimeStamp.call(self, target);
+			self.ShowTimeStamp(target);
 		}
 	});
 	Bind(this.arrElems.messageText, 'keypress', function(e){
 		if(!e.shiftKey && e.keyCode === 13){
 			e.preventDefault();
-			self.AddMessage.call(self);
+			self.AddMessage();
 		}
 	});
-}
+};
