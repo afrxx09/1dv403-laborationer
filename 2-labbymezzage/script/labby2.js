@@ -131,10 +131,10 @@ Labby2.prototype.RenderMessage = function(i){
 	eMessage.setAttribute('class', 'message');
 	eMessage.setAttribute('data-id', i);
 	
-	eDeleteIcon = document.createElement('span');
+	eDeleteIcon = document.createElement('a');
 	eDeleteIcon.setAttribute('class', 'delete-icon');
 	
-	eTimeIcon = document.createElement('span');
+	eTimeIcon = document.createElement('a');
 	eTimeIcon.setAttribute('class', 'time-icon');
 	
 	eTimeStamp = document.createElement('span');

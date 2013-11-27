@@ -30,7 +30,7 @@ html, body{
 	width:16px;
 	height:16px;
 	padding:3px;
-	background-image: url('cross.png');
+	background-image: url('images/cross.png');
 	background-repeat:no-repeat;
 	cursor:pointer;
 }
@@ -61,13 +61,14 @@ html, body{
 	width:16px;
 	height:16px;
 	padding:3px;
+	cursor:pointer;
 }
 .delete-icon{
-	background-image: url('delete.png');
+	background-image: url('images/delete.png');
 	background-repeat:no-repeat;
 }
 .time-icon{
-	background-image: url('clock.png');
+	background-image: url('images/clock.png');
 	background-repeat:no-repeat;
 }
 

@@ -10,6 +10,7 @@ function Bind(elem, t, f){
 }
 
 function StopProp(e){
+	e = e || event;
 	if(e.stopPropagation){
 		e.stopPropagation();
 	}
@@ -19,6 +20,7 @@ function StopProp(e){
 }
 
 function PrevDef(e){
+	e = e || event;
 	if(e.preventDefault){
 		e.preventDefault();
 	}
