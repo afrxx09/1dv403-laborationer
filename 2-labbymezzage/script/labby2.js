@@ -156,7 +156,6 @@ Labby2.prototype.DeleteMessage = function(target){
 	id = target.parentNode.getAttribute('data-id');
 	if(confirm("Är du säker på att du vill ta bort detta meddelandet?")){
 		aMessages.splice(id, 1);
-		//this.setMessages(aMessages);
 		this.UpdateCount(); 
 		this.RenderMessages();
 	}
