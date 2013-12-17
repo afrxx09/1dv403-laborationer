@@ -1,0 +1,44 @@
+<!DOCTYPE HTML>
+<html lang="sv">
+	<head>
+		<meta charset="UTF-8" />
+		<title>Lab 4 - Form-validation</title>
+		<link rel="stylesheet" type="text/css" href="style.css" />
+	</head>
+	<body>
+		<div id="main">
+			<form id="da-form" method="post" action="?post">
+				<div class="row">
+					<label for="first-name">Förnamn</label>
+					<input type="text" id="first-name" name="first-name" />
+				</div>
+				<div class="row">
+					<label for="last-name">Efternamn</label>
+					<input type="text" id="last-name" name="last-name" />
+				</div>
+				<div class="row">
+					<label for="zip">Postnummer</label>
+					<input type="text" id="zip" name="zip" />
+				</div>
+				<div class="row">
+					<label for="email">E-post</label>
+					<input type="text" id="email" name="email" />
+				</div>
+				<div class="row">
+					<label for="sel">Välj en</label>
+					<select id="sel" name="sel">
+						<option value="0">Välj alternativ...</option>
+						<option value="1">Alt 1</option>
+						<option value="2">Alt 2</option>
+						<option value="3">alt 3</option>
+					</select>
+				</div>
+				<div class="row">
+					<input type="submit" value="Skicka"/>
+				</div>
+				<div class="clear"></div>
+			</form>
+		</div>
+        <script src="script/script.js"></script>
+	</body>
+</html>
