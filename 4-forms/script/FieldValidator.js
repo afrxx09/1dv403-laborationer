@@ -1,8 +1,10 @@
 function Field(elem){
-	var self, field, validationType, value, count;
+	var self, field, validationType, value, count, fieldTypes;
 	self = this;
 	field = elem;
+	value = '';
 	count = 0;
+	fieldTypes = ['text', 'number', 'email']
 	
 	this.valdiationFunc = null;
 	this.valid = false;
@@ -20,12 +22,15 @@ function Field(elem){
 	};
 	this.setValue = function(v){
 		value = v;
-		field.value = value;
 	};
+	
+	this.setInputValue = function(v){
+		elem.value = v;
+	}
 	
 	function _setValidationType(){
 		validationType = field.getAttribute('data-fieldtype');
-		if(validationType === null){
+		if(fieldTypes.indexOf(validationType) === -1){
 			validationType = text;
 		}
 	}
@@ -52,17 +57,27 @@ function Field(elem){
 		}
 	}
 	
+	function _createErrorMessage(){
+		var error, text;
+		error = document.createElement('p');
+		text = document.createTextNode('obj! Ej giltigt...');
+		error.appendChild(text);
+		AddClass(error, 'errorMessage');
+		elem.parentNode.appendChild(error);
+	}
+	
 	_setValidationCount();
 	_setValidationType();
 	_setValidationFunc();
+	_createErrorMessage();
 	
 	Bind(field, 'blur', function(){
-		value = field.value;
 		self.Validate();
 	});
 }
 
 Field.prototype.Validate = function(){
+	this.setValue(this.getElem().value);
 	if(this.valdiationFunc()){
 		this.Valid();
 	}
@@ -72,38 +87,52 @@ Field.prototype.Validate = function(){
 }
 
 Field.prototype.Valid = function(){
-	var elem = this.getElem();
 	this.valid = true;
-	RemoveClass(elem, 'invalid');
-	AddClass(elem, 'valid');
-	this.HideMessage(elem);
+	RemoveClass(this.getElem(), 'invalid');
+	AddClass(this.getElem(), 'valid');
+	this.HideError(this.getElem());
 }
 
 Field.prototype.Invalid = function(){
-	var elem = this.getElem();
 	this.valid = false;
-	RemoveClass(elem, 'valid');
-	AddClass(elem, 'invalid');
-	this.ShowMessage(elem);
+	RemoveClass(this.getElem(), 'valid');
+	AddClass(this.getElem(), 'invalid');
+	this.ShowError(this.getElem());
 }
 
-Field.prototype.HideMessage = function(elem){
-	
+Field.prototype.HideError = function(elem){
+	var error;
+	error = elem.parentNode.getElementsByTagName('p')[0];
+	error.style.display = 'none';
 }
 
-Field.prototype.ShowMessage = function(elem){
-	
+Field.prototype.ShowError = function(elem){
+	var error;
+	error = elem.parentNode.getElementsByTagName('p')[0];
+	error.style.display = 'block';
 }
 
 Field.prototype.ValidateNumber = function(){
-	var value = this.getValue();
-	value.replace(/[\t\r\n\f\D\s]/g, '');
-	return (value.length >= this.getCount()) ? true : false;
+	var value, r;
+	value = this.getValue().replace(/[\t\r\n\f\D\s]/g, '');
+	r = (value.length == this.getCount()) ? true : false;
+	if(r){
+		this.setValue(value);
+		this.setInputValue(value);
+	}
+	return r;
 }
 
+	//inte inte vanliga tecken, inga siffror som första	= minst en bokstav		x
+	//en eller flera bokstäver, siffror, "_", ".", "-"	= en bokstav till		x+
+	//förhindra "." innan "@"													x
+	//@																			@
+	//inte inte vanliga tecken, inga siffror som första	= minst en bokstav		x
+	//en eller flera bokstäver, siffror, "_", ".", "-"	= en bokstav till		x+
+	//en punkt																	.
+	//topdomän 2-4 bokstäver													se/com/info/gov/co.uk
 Field.prototype.ValidateEmail = function(){
-	var valid = false;
-	return valid;
+	return (this.getValue().match(/^[^\W\d][\w\d_.-]+[^\.]@[^\d\._][\w\d_.-]+\.[a-z]{2,4}$/i) != null) ? true : false;
 }
 
 Field.prototype.ValidateText = function(){
