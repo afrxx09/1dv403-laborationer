@@ -1,3 +1,5 @@
+"use strict";
+
 function Field(elem){
 	var self, field, validationType, value, count, fieldTypes;
 	self = this;
@@ -63,6 +65,7 @@ function Field(elem){
 		text = document.createTextNode('obj! Ej giltigt...');
 		error.appendChild(text);
 		AddClass(error, 'errorMessage');
+		AddClass(error, 'hidden');
 		elem.parentNode.appendChild(error);
 	}
 	
@@ -103,13 +106,15 @@ Field.prototype.Invalid = function(){
 Field.prototype.HideError = function(elem){
 	var error;
 	error = elem.parentNode.getElementsByTagName('p')[0];
-	error.style.display = 'none';
+	RemoveClass(error, 'show');
+	AddClass(error, 'hidden');
 }
 
 Field.prototype.ShowError = function(elem){
 	var error;
 	error = elem.parentNode.getElementsByTagName('p')[0];
-	error.style.display = 'block';
+	RemoveClass(error, 'hidden');
+	AddClass(error, 'show');
 }
 
 Field.prototype.ValidateNumber = function(){

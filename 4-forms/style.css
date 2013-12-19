@@ -30,6 +30,14 @@ body{
 	clear:both;
 }
 
+.hidden{
+	display: none;
+}
+
+.show{
+	display: block;
+}
+
 .row{
 	position:relative;
 	width:100%;
@@ -80,11 +88,10 @@ button.dialogbtn:hover{
 }
 
 .errorMessage{
-	display:none;
 	position:absolute;
 	color:#f00;
 	top:0px;
-	right:0px;
+	right:-65px;
 	padding:5px 8px;
 	background:#fff;
 	border:1px solid #f00;
@@ -92,7 +99,6 @@ button.dialogbtn:hover{
 }
 
 #dialog-bg{
-	display:none;
 	position:fixed;
 	top:0px;
 	left:0px;
@@ -103,8 +109,6 @@ button.dialogbtn:hover{
 }
 
 #dialog{
-	position:fixed;
-	display:none;
 	position:fixed;
 	top:100px;
 	left:50%;

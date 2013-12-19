@@ -9,12 +9,12 @@
 		<div id="main">
 			<form id="da-form" method="post" action="http://voyager.lnu.se/tekinet/kurser/dtt/wp_webbteknik/process_form.php">
 				<div class="row">
-					<label for="first-name">Förnamn</label>
-					<input id="first-name" class="required" type="text" name="first-name" data-fieldtype="text" data-mincount="1" />
+					<label for="firstname">Förnamn</label>
+					<input id="firstname" class="required" type="text" name="firstname" data-fieldtype="text" data-mincount="1" />
 				</div>
 				<div class="row">
-					<label for="last-name">Efternamn</label>
-					<input id="last-name" class="required"type="text" name="last-name" data-fieldtype="text" data-mincount="1" />
+					<label for="lastname">Efternamn</label>
+					<input id="lastname" class="required" type="text" name="lastname" data-fieldtype="text" data-mincount="1" />
 				</div>
 				<div class="row">
 					<label for="zip">Postnummer</label>
@@ -39,29 +39,29 @@
 				<div class="clear"></div>
 			</form>
 		</div>
-		<div id="dialog-bg">
-			<div id="dialog">
+		<div id="dialog-bg" class="hidden">
+			<div id="dialog" class="hidden">
 				<div id="dialog-header">Bekräfta uppgifter</div>
 				<div id="dialog-body">
 					<div class="dialog-row">
 						<div class="dialog-col">Förnamn</div>
-						<div class="dialog-col"></div>
+						<div id="confirm-firstname" class="dialog-col"></div>
 					</div>
 					<div class="dialog-row">
 						<div class="dialog-col">Efternamn</div>
-						<div class="dialog-col"></div>
+						<div id="confirm-lastname" class="dialog-col"></div>
 					</div>
 					<div class="dialog-row">
 						<div class="dialog-col">Postnr</div>
-						<div class="dialog-col"></div>
+						<div id="confirm-zip" class="dialog-col"></div>
 					</div>
 					<div class="dialog-row">
 						<div class="dialog-col">E-post</div>
-						<div class="dialog-col"></div>
+						<div id="confirm-email" class="dialog-col"></div>
 					</div>
 					<div class="dialog-row">
 						<div class="dialog-col">Val</div>
-						<div class="dialog-col"></div>
+						<div id="confirm-sel" class="dialog-col"></div>
 					</div>
 					<div class="dialog-row">
 						<button id="confirm" class="dialogbtn">Bekräfta</button>
