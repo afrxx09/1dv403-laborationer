@@ -20,7 +20,7 @@ body, html {
 	position:fixed;
 	top:0;
 	left:0;
-	background-color:#c33;
+	background-image:url(../images/bg.jpg);
 }
 
 .menu{
@@ -29,16 +29,44 @@ body, html {
 	left:0;
 	height:40px;
 	border-top:1px solid #000;
-	background-color:#3c3;
+	background-color:#f3f3f3;
+}
+
+.iconwrap{
+	position:relative;
+	float:left;
 }
 
 .menuicon{
-	float:left;
-	margin-left:10px;
-	margin-top:5px;
-	height:30px;
-	width:30px;
-	background-color:#f00;
+	height:32px;
+	width:32px;
+	margin:5px;
+	cursor:pointer;
+	background: rgb(0,114,208);
+}
+
+.iconlist{
+	width:auto;
+	position:absolute;
+	list-style-type:none;
+	bottom:40px;
+	left:4px;
+	border-top:1px solid #b3b3b3;
+	border-left:1px solid #b3b3b3;
+}
+.iconlist li{
+	display:block;
+	padding:10px 5px;
+	border-bottom:1px solid #b3b3b3;
+	border-right:1px solid #b3b3b3;
+	background:rgb(0,114,208);
+	cursor:pointer;
+	color:#fff;
+	font-weight:bold;
+	font-size:12px;
+}
+.iconlist li:hover{
+	background:rgb(0,134,248);
 }
 
 .window{
@@ -76,6 +104,20 @@ body, html {
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0072d0', endColorstr='#005eb0',GradientType=0 ); /* IE6-9 */
 }
 
+.titlebartitle{
+	position:absolute;
+	top:2px;
+	left:24px;
+}
+
+.titlebaricon{
+	position:absolute;
+	top:3px;
+	left:3px;
+	width:16px;
+	height:16px;
+}
+
 .closebutton{
 	position:absolute;
 	top:3px;
@@ -103,10 +145,39 @@ body, html {
 	background-repeat:no-repeat;
 }
 
-.titlebartitle{
+.minbutton{
 	position:absolute;
-	top:2px;
-	left:24px;
+	top:3px;
+	right:35px;
+	height:16px;
+	width:32px;
+	border:1px solid #000;
+	text-align:center;
+	cursor:pointer;
+	background: rgb(255,48,25); /* Old browsers */
+	background: -moz-linear-gradient(top,  rgba(255,48,25,1) 0%, rgba(207,4,4,1) 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,48,25,1)), color-stop(100%,rgba(207,4,4,1))); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  rgba(255,48,25,1) 0%,rgba(207,4,4,1) 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  rgba(255,48,25,1) 0%,rgba(207,4,4,1) 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  rgba(255,48,25,1) 0%,rgba(207,4,4,1) 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  rgba(255,48,25,1) 0%,rgba(207,4,4,1) 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ff3019', endColorstr='#cf0404',GradientType=0 ); /* IE6-9 */
+}
+.minbutton .minify{
+	width:16px;
+	height:16px;
+	margin:0 auto;
+	background-image:url(../images/minify16.png);
+	background-position:center;
+	background-repeat:no-repeat;
+}
+
+.windowcontent{
+	width:100%;
+	position:absolute;
+	top:25px;
+	left:0px;
+	background-color:#f3f3f3;
 }
 
 .statusbar{
