@@ -60,7 +60,15 @@ Win.prototype.CreateTitleBar = function(){
 	this.CreateTitleBarCloseButton();
 	this.CreateTitleBarMinifyIcon();
 	this.win.appendChild(this.titlebar);
+	this.BindTitleBar();
 };
+
+Win.prototype.BindTitleBar = function(){
+	var self = this;
+	GEN.Bind(this.titlebar, 'mousedown', function(e){
+		PWD.StartMove(self, e.clientX, e.clientY);
+	});
+}
 
 Win.prototype.CreateTitleBarCloseButton = function(){
 	var cross = document.createElement('div');
@@ -128,6 +136,9 @@ Win.prototype.CreateStatusBar = function(){
 	this.win.appendChild(this.statusbar);
 	this.CreateStatusBarLoadingImage();
 	this.CreateStatusBarText();
+	if(this.resizeable){
+		this.CreateResizeIcon();
+	}
 };
 
 Win.prototype.CreateStatusBarLoadingImage = function(){
@@ -145,6 +156,20 @@ Win.prototype.CreateStatusBarText = function(){
 
 Win.prototype.AddStatusBarText = function(t){
 	this.statusbartext.innerHTML = t;
+};
+
+Win.prototype.CreateResizeIcon = function(){
+	this.resizeicon = document.createElement('div');
+	GEN.AddClass(this.resizeicon, 'resizeicon');
+	this.statusbar.appendChild(this.resizeicon);
+	this.BindResizeIcon();
+};
+
+Win.prototype.BindResizeIcon = function(e){
+	var self = this;
+	GEN.Bind(this.resizeicon, 'mousedown', function(e){
+		PWD.StartResize(self, e.clientX, e.clientY);
+	});
 };
 
 Win.prototype.HideLoading = function(){

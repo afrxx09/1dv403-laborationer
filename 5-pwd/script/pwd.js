@@ -9,6 +9,15 @@ var GEN = {
 			elem.attachEvent('on'+t,f);
 		}
 	},
+	
+	Unbind : function(elem, t, f){
+		if(elem.removeEventListener){
+			elem.removeEventListener(t,f,false);
+		}
+		else if(elem.detachEvent){
+			elem.detachEvent('on'+t,f);
+		}
+	},
 
 	StopProp : function(e){
 		if(e.stopPropagation){
@@ -53,31 +62,134 @@ var GEN = {
 			classes = classes.replace(' ' + name + ' ', ' ');
 		}
 		elem.className = classes.trim();
+	},
+	
+	disableSelection:function(element){
+		element.onselectstart = function() {return false;};
+		element.unselectable = "on";
+		element.style.MozUserSelect = "none";
+		element.style.cursor = "default";
+	},
+	
+	Ajax : function(o){
+		var xhr, opt, r, json;
+		if(!o.url){
+			r = false
+		}
+		else{
+			opt = {
+				m : (!o.m) ? 'get' : o.m,
+				url : o.url,
+				async : (!o.async) ? true : o.async,
+				cb : (!o.cb) ? null : o.cb,
+				t : (!o.t) ? this : o.t
+			};
+			
+			xhr = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
+			xhr.onreadystatechange = function(){
+				if(xhr.readyState == 4){
+					if((xhr.status >= 200 && xhr.status < 300) || xhr.status == 304){
+						json = JSON.parse(xhr.responseText);
+						if(!o.cb !== true){
+							if(!o.t !== true){
+								o.cb.call(o.t, json);
+							}
+							else{
+								o.cb(json);
+							}
+						}
+					}
+					else{
+						if(!o.cb !== true){
+							o.cb(false);
+						}
+					}
+				}
+			};
+			xhr.open(opt.m, opt.url, opt.async);
+			xhr.send(null);
+		}
 	}
 }
 
 var PWD = {
-	width		: 0,
-	height		: 0,
-	menu		: null,
-	menuicons	: {},
-	desktop		: null,
-	windows 	: [],
-	winpostop	: 0,
-	winposleft	: 0,
-	apps		: ['gallery', 'rss', 'memory'],
+	width : 0,
+	height : 0,
+	menu : null,
+	menuicons : {},
+	desktop : null,
+	windows : [],
+	winpostop : 0,
+	winposleft : 0,
+	apps : ['gallery', 'rss', 'memory'],
+	resize : {
+		active : false,
+		win : null,
+		startx : 0,
+		starty : 0,
+		startw : 0,
+		starth : 0
+	},
+	move 		:{
+		active : false,
+		win : null,
+		startx : 0,
+		starty : 0,
+		startt : 0,
+		startl : 0
+	},
 	
 	Init : function(){
 		this.CreateDesktop();
 		this.CreateMenu();
 		this.UpdateSize();
 		this.Bind();
+		GEN.disableSelection(document.body);
 	},
 	
 	Bind : function(){
 		var self = this;
 		GEN.Bind(window, 'resize', function(){
 			self.UpdateSize();
+		});
+		GEN.Bind(document.body, 'mouseup', function(e){
+			PWD.StopResize();
+			PWD.StopMove();
+		});
+		GEN.Bind(document.body, 'mousemove', function(e){
+			if(self.resize.active){
+				var t, w, h, dx, dy;
+				t = self.resize.win; 
+				dx = e.clientX - self.resize.startx;
+				dy = e.clientY - self.resize.starty;
+				w = (self.resize.startw + dx < 200) ? 200 : self.resize.startw + dx;
+				h = (self.resize.starth + dy < 200) ? 200 : self.resize.starth + dy;
+				if(t.top + h > self.height-40){
+					h = (self.height-40) - t.top;
+				}
+				t.setSize(w, h);
+			}
+			if(self.move.active){
+				var t, x, y, dx, dy;
+				t = self.move.win;
+				dx = e.clientX - self.move.startx; 
+				dy = e.clientY - self.move.starty;
+				x = self.move.startl + dx;
+				y = self.move.startt + dy;
+				if(x < 0){
+					x = 0;
+				}
+				if(x + t.width > self.width){
+					x = self.width - t.width;
+				}
+				if(y < 0){
+					y = 0;
+				}
+				if(y + t.height > self.height-40){
+					y = (self.height-40) - t.height;
+				}
+				t.setPos(y, x);
+			}
 		});
 	},
 	
@@ -243,9 +355,11 @@ var PWD = {
 	},
 	
 	CloseWindow : function(id){
-		this.RemoveFromIconList(id);
+		var wintype = this.windows[id].type;
 		this.desktop.removeChild(this.windows[id].win);
+		this.RemoveFromIconList(id);
 		this.windows[id] = null;
+		this.CreateIconList(this.menuicons[wintype]);
 	},
 	
 	RemoveFromIconList : function(id){
@@ -267,7 +381,7 @@ var PWD = {
 			li.appendChild(text);
 			GEN.Bind(li, 'click', function(){
 				var id = parseInt(this.getAttribute('rel'));
-				PWD.ToggleActiveWindow(PWD.windows[id].win);
+				self.ToggleActiveWindow(self.windows[id].win);
 			});
 			icon.list.appendChild(li);
 		}
@@ -286,7 +400,9 @@ var PWD = {
 	ToggleActiveWindow : function(w){
 		var i;
 		for(i = 0; i < this.windows.length; i++){
-			GEN.RemoveClass(this.windows[i].win, 'active');
+			if(this.windows[i] !== null){
+				GEN.RemoveClass(this.windows[i].win, 'active');
+			}
 		}
 		if(GEN.HasClass(w, 'hidden')){
 			GEN.RemoveClass(w, 'hidden');
@@ -305,6 +421,44 @@ var PWD = {
 		var w = this.windows[id].win;
 		GEN.AddClass(w, 'hidden');
 		GEN.RemoveClass(w, 'active');
+	},
+	
+	StartResize : function(w, x, y){
+		this.resize.active = true;
+		this.resize.startx = x;
+		this.resize.starty = y;
+		this.resize.startw = w.width,
+		this.resize.starth = w.height,
+		this.resize.win = w;
+		this.ToggleActiveWindow(w.win);
+	},
+	
+	StopResize : function(){
+		this.resize.active = false;
+		this.resize.startx = 0;
+		this.resize.starty = 0;
+		this.resize.startw = 0,
+		this.resize.starth = 0,
+		this.resize.win = null;
+	},
+	
+	StartMove : function(w, x, y){
+		this.move.active = true;
+		this.move.win = w;
+		this.move.startx = x;
+		this.move.starty = y;
+		this.move.startt = w.top;
+		this.move.startl = w.left;
+		this.ToggleActiveWindow(w.win);
+	},
+	
+	StopMove : function(){
+		this.move.active = false;
+		this.move.win = null;
+		this.move.startx = 0;
+		this.move.starty = 0;
+		this.move.startt = 0;
+		this.move.startl = 0;
 	}
 };
 
