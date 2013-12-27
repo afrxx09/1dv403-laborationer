@@ -1,11 +1,15 @@
-function RSS(d, id){
+"use strict";
+
+function RSS(id){
 	var self;
 	self = this;
-	this.type = 'rss';
+	
 	Win.call(this);
 	this.id = id;
+	this.type = 'rss';
+	this.resizeable = true;
 	
-	this.CreateWindow(d);
+	this.CreateWindow();
 	this.AddTitleBarText('RSS');
 	this.CreateTitleBarIcon('images/rss16.png');
 	this.AddStatusBarText('Loading RSS');

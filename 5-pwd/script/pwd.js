@@ -1,4 +1,4 @@
-"user strict";
+"use strict";
 
 var GEN = {
 	Bind : function(elem, t, f){
@@ -68,7 +68,6 @@ var GEN = {
 		element.onselectstart = function() {return false;};
 		element.unselectable = "on";
 		element.style.MozUserSelect = "none";
-		element.style.cursor = "default";
 	},
 	
 	Ajax : function(o){
@@ -266,7 +265,7 @@ var PWD = {
 	},
 	
 	CreateIcon : function(type){
-		var iconwrap, icon;
+		var iconwrap, icon, list;
 		iconwrap = document.createElement('div');
 		GEN.AddClass(iconwrap, 'iconwrap');
 		this.menuicons[type] = {
@@ -299,7 +298,7 @@ var PWD = {
 	BindGalleryIcon : function(icon){
 		var self = this;
 		GEN.Bind(icon.elem, 'click', function(){
-			self.windows.push(new Gallery(self.desktop, self.windows.length));
+			self.windows.push(new Gallery(self.windows.length));
 			self.PositionWindow(self.windows[self.windows.length-1]);
 			self.menuicons.gallery.windows.push(self.windows.length-1);
 			self.CreateIconList(self.menuicons.gallery);
@@ -315,7 +314,7 @@ var PWD = {
 	BindRSSIcon : function(icon){
 		var self = this;
 		GEN.Bind(icon.elem, 'click', function(){
-			self.windows.push(new RSS(self.desktop, self.windows.length));
+			self.windows.push(new RSS(self.windows.length));
 			self.PositionWindow(self.windows[self.windows.length-1]);
 			self.menuicons.rss.windows.push(self.windows.length-1);
 			self.CreateIconList(self.menuicons.rss);
@@ -331,7 +330,7 @@ var PWD = {
 	BindMemoryIcon : function(icon){
 		var self = this;
 		GEN.Bind(icon.elem, 'click', function(){
-			self.windows.push(new Memory(self.desktop, self.windows.length));
+			self.windows.push(new Memory(self.windows.length));
 			self.PositionWindow(self.windows[self.windows.length-1]);
 			self.menuicons.memory.windows.push(self.windows.length-1);
 			self.CreateIconList(self.menuicons.memory);
@@ -355,7 +354,7 @@ var PWD = {
 	},
 	
 	CloseWindow : function(id){
-		var wintype = this.windows[id].type;
+		var wintype = (this.windows[id].type == 'galleryimage') ? 'gallery' : this.windows[id].type;
 		this.desktop.removeChild(this.windows[id].win);
 		this.RemoveFromIconList(id);
 		this.windows[id] = null;
@@ -363,9 +362,10 @@ var PWD = {
 	},
 	
 	RemoveFromIconList : function(id){
-		var win, windows;
+		var win, type, windows;
 		win = this.windows[id];
-		windows = this.menuicons[win.type].windows;
+		type = (win.type == 'galleryimage') ? 'gallery' : win.type;
+		windows = this.menuicons[type].windows;
 		windows.splice(windows.indexOf(id), 1);
 	},
 	

@@ -1,19 +1,21 @@
-function Memory(d, id){
+"use strict";
+
+function Memory(id){
 	var self, x, y, table, memoryrows, memorycols;
 	self = this;
 	Win.call(this);
 	
 	this.id = id;
 	this.type = 'memory';
-	this.resizeable = false;
-	this.CreateWindow(d);
+	this.resizeable = true;
+	this.CreateWindow();
 	this.AddTitleBarText('Memory');
 	this.CreateTitleBarIcon('images/memory16.png');
 	this.AddStatusBarText('Loading Memory');
 	this.ShowLoading();
-	this.setSize(400, 400);
+	this.setSize(400, 500);
 	
-	this.memoryrows = 3;
+	this.memoryrows = 4;
 	this.memorycols = 4;
 	this.StartGame = function(){
 		this.score = 0;

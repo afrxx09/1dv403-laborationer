@@ -206,3 +206,12 @@ body, html {
 	margin-left:3px;
 	font-size: 11px;
 }
+
+.resizeicon{
+	position:absolute;
+	bottom:0px;
+	right:0px;
+	width:16px;
+	height:16px;
+	background-image:url(../images/resize16.png);
+}

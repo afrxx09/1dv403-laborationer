@@ -1,8 +1,11 @@
+"use strict";
+
 function Win(){
 	var self;
 	self = this;
 	this.id = 0;
-	this.desktop = null;
+	this.desktop = PWD.desktop;
+	
 	this.win = null;
 	this.titlebar = null;
 	this.minbutton = null;
@@ -39,9 +42,8 @@ function Win(){
 	};
 };
 
-Win.prototype.CreateWindow = function(d){
+Win.prototype.CreateWindow = function(){
 	var self =this;
-	this.desktop = d;
 	this.win = document.createElement('div');
 	GEN.AddClass(this.win, 'window');
 	this.desktop.appendChild(this.win);

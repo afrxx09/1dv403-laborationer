@@ -1,0 +1,34 @@
+.gallery{
+	overflow-y:scroll;
+	height:inherit;
+}
+
+.gallery table{
+	width:100%;
+}
+
+.gallery td .thumbwrap{
+	padding:10px;
+	background:#fff;
+	border:1px solid #000;
+	margin:0 auto;
+	cursor:pointer;
+}
+
+.gallery .thumbwrap img{
+	display:block;
+	margin:0 auto;
+}
+
+.galleryimagewrap{
+	position:relative;
+	width:inherit;
+	height:inherit;
+	overflow:auto;
+}
+
+.galleryimagewrap img{
+	position:absolute;
+	top:50%;
+	left:50%;
+}
