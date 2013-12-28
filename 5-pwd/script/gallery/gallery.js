@@ -1,9 +1,11 @@
 "use strict";
+
 function Gallery(id){
 	var self;
 	self = this;
 	Win.call(this);
 	
+	this.zIndex = id + 1;
 	this.type = 'gallery';
 	this.resizeable = true;
 	this.id = id;
@@ -24,8 +26,7 @@ function Gallery(id){
 	this.CreateGallery();
 	this.LoadGallery();
 }
-
-Gallery.prototype = new Win();
+GEN.InheritPrototype(Gallery, Win);
 
 Gallery.prototype.CreateGallery = function(){
 	this.gallery = document.createElement('div');
@@ -41,7 +42,8 @@ Gallery.prototype.LoadGallery = function(){
 	this.o = {
 		url : self.ajaxurl,
 		cb : this.LoadGalleryDone,
-		t : self
+		t : self,
+		f : 'json'
 	};
 	GEN.Ajax(this.o);
 };

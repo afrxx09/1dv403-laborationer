@@ -5,6 +5,7 @@ function GalleryImage(id,img){
 	self = this;
 	Win.call(this);
 	
+	this.zIndex = id + 1;
 	this.id = id;
 	this.type = 'galleryimage';
 	this.resizeable = false;
@@ -20,7 +21,7 @@ function GalleryImage(id,img){
 	this.InsertImage();
 }
 
-GalleryImage.prototype = new Win();
+GEN.InheritPrototype(GalleryImage, Win);
 
 GalleryImage.prototype.InsertImage = function(){
 	var wrap, img;

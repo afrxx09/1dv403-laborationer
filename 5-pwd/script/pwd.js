@@ -73,7 +73,7 @@ var GEN = {
 	Ajax : function(o){
 		var xhr, opt, r, json;
 		if(!o.url){
-			r = false
+			return false; 
 		}
 		else{
 			opt = {
@@ -81,20 +81,32 @@ var GEN = {
 				url : o.url,
 				async : (!o.async) ? true : o.async,
 				cb : (!o.cb) ? null : o.cb,
-				t : (!o.t) ? this : o.t
+				t : (!o.t) ? this : o.t,
+				f : (!o.f) ? 'json' : o.f
 			};
 			
 			xhr = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
 			xhr.onreadystatechange = function(){
 				if(xhr.readyState == 4){
 					if((xhr.status >= 200 && xhr.status < 300) || xhr.status == 304){
-						json = JSON.parse(xhr.responseText);
+						r = xhr.responseText;
 						if(!o.cb !== true){
-							if(!o.t !== true){
-								o.cb.call(o.t, json);
+							if(o.f != 'json'){
+								if(!o.t !== true){
+									o.cb.call(o.t, r);
+								}
+								else{
+									o.cb(r);
+								}
 							}
 							else{
-								o.cb(json);
+								json = JSON.parse(r);
+								if(!o.t !== true){
+									o.cb.call(o.t, json);
+								}
+								else{
+									o.cb(json);
+								}
 							}
 						}
 					}
@@ -108,8 +120,20 @@ var GEN = {
 			xhr.open(opt.m, opt.url, opt.async);
 			xhr.send(null);
 		}
+	},
+	
+	Obj : function(o){
+		function F(){};
+		F.prototype = o;
+		return new F();
+	},
+	
+	InheritPrototype : function(sub, sup){
+		var prototype = GEN.Obj(sup.prototype);
+		prototype.constructor = sub;
+		sub.prototype = prototype;
 	}
-}
+};
 
 var PWD = {
 	width : 0,
@@ -381,7 +405,17 @@ var PWD = {
 			li.appendChild(text);
 			GEN.Bind(li, 'click', function(){
 				var id = parseInt(this.getAttribute('rel'));
-				self.ToggleActiveWindow(self.windows[id].win);
+				self.ToggleActiveWindow(self.windows[id]);
+				var wtype = (self.windows[id].type == 'galleryimage') ? 'gallery' : self.windows[id].type;
+				self.HideIconList(self.menuicons[wtype]);
+			});
+			GEN.Bind(li, 'mouseover', function(){
+				var id = parseInt(this.getAttribute('rel'));
+				self.HighlightWindow(self.windows[id]);
+			});
+			GEN.Bind(li, 'mouseleave', function(){
+				var id = parseInt(this.getAttribute('rel'));
+				self.UnHighlightWindow(self.windows[id]);
 			});
 			icon.list.appendChild(li);
 		}
@@ -398,16 +432,39 @@ var PWD = {
 	},
 	
 	ToggleActiveWindow : function(w){
-		var i;
-		for(i = 0; i < this.windows.length; i++){
-			if(this.windows[i] !== null){
-				GEN.RemoveClass(this.windows[i].win, 'active');
+		var i, tz, max;
+		tz = w.zIndex;
+		max = this.windows.length;
+		for(i = 0; i < max; i++){
+			if(this.windows[i] != null){
+				if(this.windows[i].zIndex > tz){
+					this.windows[i].zIndex = this.windows[i].zIndex - 1;
+					this.windows[i].win.style.zIndex = this.windows[i].zIndex;
+				}
 			}
 		}
-		if(GEN.HasClass(w, 'hidden')){
-			GEN.RemoveClass(w, 'hidden');
+		if(GEN.HasClass(w.win, 'hidden')){
+			w.hidden = false;
+			GEN.AddClass(w.win, 'visible');
 		}
-		GEN.AddClass(w, 'active');
+		w.zIndex = max;
+		w.win.style.zIndex = max;
+	},
+	
+	HighlightWindow : function(w){
+		if(GEN.HasClass(w.win, 'hidden')){
+			w.hidden = true;
+			GEN.AddClass(w.win, 'visible');
+		}
+		w.win.style.zIndex = this.windows.length + 1;
+	},
+	
+	UnHighlightWindow : function(w){
+		if(w.hidden == true){
+			GEN.RemoveClass(w.win, 'visible');
+			GEN.AddClass(w.win, 'hidden');
+		}
+		w.win.style.zIndex = w.zIndex;
 	},
 	
 	MinifyAllWindows : function(){
@@ -430,7 +487,7 @@ var PWD = {
 		this.resize.startw = w.width,
 		this.resize.starth = w.height,
 		this.resize.win = w;
-		this.ToggleActiveWindow(w.win);
+		this.ToggleActiveWindow(w);
 	},
 	
 	StopResize : function(){
@@ -449,7 +506,7 @@ var PWD = {
 		this.move.starty = y;
 		this.move.startt = w.top;
 		this.move.startl = w.left;
-		this.ToggleActiveWindow(w.win);
+		this.ToggleActiveWindow(w);
 	},
 	
 	StopMove : function(){
@@ -464,4 +521,4 @@ var PWD = {
 
 window.onload = function(){
 	PWD.Init();
-}
+};

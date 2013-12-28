@@ -1,0 +1,33 @@
+.rss{
+	height:inherit;
+	padding:0 10px;
+	overflow:auto;
+}
+
+.rss h1, .rss h2, .rss h3, .rss h4, .rss h5, .rss h6{
+	display:block;
+	font-size:1em;
+	margin-bottom: 0.25em;
+	margin-top:0.5em;
+	padding:0.2em;
+	background-color:#39c;
+}
+
+.rss p{
+	display:block;
+	font-size:0.75em;
+	margin-bottom: 0.25em;
+}
+
+.rss a{
+	display:block;
+	font-size:0.75em;
+	margin-bottom: 0.25em;
+	padding:0.2em;
+	background-color:#adf;
+}
+
+.rss img{
+	display:block;
+	max-width:100%;
+}

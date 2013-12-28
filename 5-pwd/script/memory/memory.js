@@ -5,6 +5,7 @@ function Memory(id){
 	self = this;
 	Win.call(this);
 	
+	this.zIndex = id + 1;
 	this.id = id;
 	this.type = 'memory';
 	this.resizeable = true;
@@ -42,7 +43,7 @@ function Memory(id){
 	this.StartGame();
 }
 
-Memory.prototype = new Win();
+GEN.InheritPrototype(Memory, Win);
 
 Memory.prototype.RandomizeTiles = function(){
 	var aRandom = RandomGenerator.getPictureArray(this.memoryrows, this.memorycols);
@@ -129,7 +130,7 @@ Memory.prototype.CreateMemoryTiles = function(){
 };
 
 Memory.prototype.CheckClick = function(target){
-	var self, id, aTiles, firstTile, thisTile;
+	var self, id, aTiles, firstTile, thisTile, clickedTile;
 	self		= this;
 	id			= target.getAttribute('data-id');
 	aTiles		= this.tiles;

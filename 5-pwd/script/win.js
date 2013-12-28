@@ -17,6 +17,8 @@ function Win(){
 	this.height = 0;
 	this.top = 0;
 	this.left = 0;
+	this.zIndex = 0;
+	this.hidden = false;
 	
 	this.setSize = function(w, h){
 		this.width = w;
@@ -43,16 +45,16 @@ function Win(){
 };
 
 Win.prototype.CreateWindow = function(){
-	var self =this;
+	var self = this;
 	this.win = document.createElement('div');
+	this.win.style.zIndex = this.zIndex;
 	GEN.AddClass(this.win, 'window');
 	this.desktop.appendChild(this.win);
 	this.CreateTitleBar();
 	this.CreateStatusBar();
 	this.CreateWindowContent();
-	PWD.ToggleActiveWindow(self.win);
 	GEN.Bind(this.win, 'click', function(){
-		PWD.ToggleActiveWindow(self.win);
+		PWD.ToggleActiveWindow(self);
 	});
 };
 
