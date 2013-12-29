@@ -13,12 +13,12 @@ PWD.Win = function(){
 	this.windowcontent = null;
 	this.statusbar = null;
 	this.statusbartext = '';
+	this.contextmenu = null;
 	
 	this.width = 0;
 	this.height = 0;
 	this.top = 0;
 	this.left = 0;
-	this.zIndex = 0;
 	this.hidden = false;
 	this.resizeable = false;
 	
@@ -42,22 +42,41 @@ PWD.Win = function(){
 	this.updateSize = function(){
 		this.elem.style.width = this.width + 'px';
 		this.elem.style.height = this.height + 'px';
-		this.windowcontent.style.height = (this.height - 46) + 'px';
+		this.windowcontent.style.height = (this.height - 66) + 'px';
 	};
 };
 
 PWD.Win.prototype.CreateWindow = function(){
 	var self = this;
 	this.elem = document.createElement('div');
-	this.elem.style.zIndex = this.zIndex;
 	PWD.G.AddClass(this.elem, 'window');
 	PWD.desktop.appendChild(this.elem);
 	this.CreateTitleBar();
-	this.CreateStatusBar();
+	this.CreateContextMenu();
 	this.CreateWindowContent();
+	this.CreateStatusBar();
 	PWD.G.Bind(this.elem, 'click', function(){
 		PWD.ToggleActiveWindow(self);
 	});
+};
+
+PWD.Win.prototype.CreateContextMenu = function(){
+	var self, arr;
+	self = this;
+	arr = [
+		{
+			name : 'Stäng',
+			cb : function(){PWD.CloseWindow(self);}
+		},
+		{
+			name : 'Minimera',
+			cb : function(){PWD.MinifyWindow(self);}
+		}
+	];
+	
+	this.contextmenu = new PWD.Win.ContextMenu();
+	this.elem.appendChild(this.contextmenu.elem);
+	this.contextmenu.AddMenuGroup('Arkiv', arr);
 };
 
 PWD.Win.prototype.CreateTitleBar = function(){
@@ -172,4 +191,99 @@ PWD.Win.prototype.HideLoading = function(){
 PWD.Win.prototype.ShowLoading = function(){
 	PWD.G.RemoveClass(this.statusbarloadingimage, 'hidden');
 	PWD.G.AddClass(this.statusbarloadingimage, 'visible');
+};
+
+/*ContextMenu*/
+PWD.Win.ContextMenu = function(){
+	var self = this;
+	
+	this.elem = null;
+	this.ul = null;
+	this.menugroups = [];
+	
+	this.Create();
+};
+
+PWD.Win.ContextMenu.prototype = {
+	Create : function(){
+		this.elem = document.createElement('div');
+		this.ul = document.createElement('ul');
+		PWD.G.AddClass(this.elem, 'contextmenu');
+		this.elem.appendChild(this.ul);
+	},
+	
+	AddMenuGroup : function(label, arr){
+		var mg;
+		mg = new PWD.Win.ContextMenuGroup(label, arr);
+		this.menugroups.push(mg);
+		this.ul.appendChild(mg.elem);
+	}
+};
+
+
+/*Context menu group*/
+PWD.Win.ContextMenuGroup = function(label, arr){
+	var self = this;
+	this.elem = null;
+	this.label = label;
+	this.list = null;
+	this.listitems = [];
+	
+	this.Create();
+	this.AddListItems(arr);
+};
+
+PWD.Win.ContextMenuGroup.prototype = {
+	Create : function(){
+		var self = this;
+		this.elem = document.createElement('li');
+		this.elem.appendChild(document.createTextNode(this.label));
+		this.list = document.createElement('ul');
+		PWD.G.AddClass(this.list, 'hidden');
+		this.elem.appendChild(this.list);
+		PWD.G.Bind(this.elem, 'click', function(e){
+			PWD.G.StopProp(e);
+			if(PWD.G.HasClass(self.list, 'hidden')){
+				PWD.G.RemoveClass(self.list, 'hidden');
+				PWD.G.AddClass(self.list, 'visible');
+			}
+			else{
+				PWD.G.RemoveClass(self.list, 'visible');
+				PWD.G.AddClass(self.list, 'hidden');
+			}
+		});
+		PWD.G.Bind(this.elem, 'mouseleave', function(){
+			PWD.G.RemoveClass(self.list, 'visible');
+			PWD.G.AddClass(self.list, 'hidden');
+		});
+	},
+	
+	AddListItems : function(arr){
+		var i, listitem;
+		for(i = 0; i < arr.length; i++){
+			listitem = new PWD.Win.ContextMenuListItem(arr[i].name, arr[i].cb);
+			this.listitems.push(listitem);
+			this.list.appendChild(listitem.elem);
+		}
+	}
+};
+
+PWD.Win.ContextMenuListItem = function(label, callback){
+	var self = this;
+	this.elem = null;
+	this.label = label;
+	this.Callback = callback;
+	this.Create();
+};
+
+PWD.Win.ContextMenuListItem.prototype = {
+	Create : function(){
+		var self = this;
+		this.elem = document.createElement('li');
+		this.elem.appendChild(document.createTextNode(this.label));
+		PWD.G.Bind(this.elem, 'click', function(e){
+			
+			self.Callback();
+		});
+	}
 };

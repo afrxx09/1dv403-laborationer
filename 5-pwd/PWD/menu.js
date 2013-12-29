@@ -83,7 +83,6 @@ PWD.Menu.MenuIcon.prototype = {
 	CreateWrap : function(){
 		this.elem = document.createElement('div');
 		PWD.G.AddClass(this.elem, 'iconwrap');
-		//this.elem.setAttribute('rel', this.icontype);
 	},
 	
 	CreateIcon : function(){
@@ -96,7 +95,6 @@ PWD.Menu.MenuIcon.prototype = {
 	BindIcon : function(){
 		var self = this;
 		PWD.G.Bind(this.elem, 'click', function(){
-			//PWD.StartApp(this.getAttribute('rel'));
 			PWD.StartApp(self.icontype);
 		});
 		PWD.G.Bind(this.elem, 'mouseover', function(){
@@ -120,6 +118,7 @@ PWD.Menu.MenuIcon.prototype = {
 	
 };
 
+/*Program list for hovering icons*/
 PWD.Menu.List = function(){
 	this.elem = null;
 	this.listitems = [];

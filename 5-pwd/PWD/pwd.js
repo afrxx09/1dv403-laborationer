@@ -110,12 +110,13 @@ var PWD = {
 		this.desktop.style.height = (this.height - this.menu.height) + 'px';
 	},
 	
-	StartApp : function(app){
-		var id, app;
-		id = this.windows.length;
-		app = new this[app](id);
+	StartApp : function(app, args){
+		var app, args;
+		args = (!args !== true) ? args : false;
+		app = new this[app](args);
 		this.windows.push(app);
 		this.PositionWindow(app);
+		this.ToggleActiveWindow(app);
 		this.menu.AddToIconList(app);
 	},
 	
@@ -251,12 +252,16 @@ var PWD = {
 		this.move.starty = 0;
 		this.move.startt = 0;
 		this.move.startl = 0;
+	},
+	
+	SetBackgroundImage : function(url){
+		this.desktop.style.backgroundImage = 'url(' + url + ')';
 	}
 };
 
 window.onload = function(){
 	var o = {
-		apps : ['Gallery']
+		apps : ['Gallery', 'Memory', 'RSS']
 	};
 	PWD.Init(o);
 };

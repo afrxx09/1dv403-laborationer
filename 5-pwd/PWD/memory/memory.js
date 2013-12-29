@@ -1,17 +1,16 @@
 "use strict";
 
-function Memory(id){
-	var self, x, y, table, memoryrows, memorycols;
+PWD.Memory = function(){
+	var self, x, y, table;
 	self = this;
-	Win.call(this);
+	PWD.Win.call(this);
 	
-	this.zIndex = id + 1;
-	this.id = id;
-	this.type = 'memory';
+	this.type = 'Memory';
 	this.resizeable = true;
+	
 	this.CreateWindow();
 	this.AddTitleBarText('Memory');
-	this.CreateTitleBarIcon('images/memory16.png');
+	this.CreateTitleBarIcon('PWD/memory/memory16.png');
 	this.AddStatusBarText('Loading Memory');
 	this.ShowLoading();
 	this.setSize(400, 500);
@@ -41,21 +40,21 @@ function Memory(id){
 		this.AddStatusBarText(this.memoryrows + 'x' + this.memorycols + 'Memory');
 	}
 	this.StartGame();
-}
+};
 
-GEN.InheritPrototype(Memory, Win);
+PWD.G.InheritPrototype(PWD.Memory, PWD.Win);
 
-Memory.prototype.RandomizeTiles = function(){
-	var aRandom = RandomGenerator.getPictureArray(this.memoryrows, this.memorycols);
+PWD.Memory.prototype.RandomizeTiles = function(){
+	var aRandom = PWD.Memory.RandomGenerator.getPictureArray(this.memoryrows, this.memorycols);
 	for(var i = 0; i < aRandom.length; i++){
 		this.tiles.push({value : aRandom[i], clickable : true, cleared : false});
 	}
 	this.score = this.tiles.length;
 };
 
-Memory.prototype.CreateMemory = function(){
+PWD.Memory.prototype.CreateMemory = function(){
 	this.wrap	= document.createElement('div');
-	GEN.AddClass(this.wrap, 'memory');
+	PWD.G.AddClass(this.wrap, 'memory');
 	this.table	= document.createElement('table');
 	this.wrap.appendChild(this.table);
 	this.windowcontent.appendChild(this.wrap);
@@ -63,32 +62,32 @@ Memory.prototype.CreateMemory = function(){
 	this.CreateGameOver();
 };
 
-Memory.prototype.CreateScoreBoard = function(){
+PWD.Memory.prototype.CreateScoreBoard = function(){
 	this.scoreboard = document.createElement('div');
-	GEN.AddClass(this.scoreboard, 'score');
+	PWD.G.AddClass(this.scoreboard, 'score');
 	this.wrap.appendChild(this.scoreboard);
 	
 	this.scoreboardguesses = document.createElement('div');
-	GEN.AddClass(this.scoreboardguesses, 'guessescount');
+	PWD.G.AddClass(this.scoreboardguesses, 'guessescount');
 	this.scoreboard.appendChild(this.scoreboardguesses);
 	
 	this.scoreboardpairs = document.createElement('div');
-	GEN.AddClass(this.scoreboardpairs, 'guessescount');
+	PWD.G.AddClass(this.scoreboardpairs, 'guessescount');
 	this.scoreboard.appendChild(this.scoreboardpairs);
 	this.UpdateScoreBoard();
 };
 
-Memory.prototype.CreateGameOver = function(){
+PWD.Memory.prototype.CreateGameOver = function(){
 	var self = this;
 	this.gameover = document.createElement('div');
-	GEN.AddClass(this.gameover, 'gameover');
-	GEN.AddClass(this.gameover, 'hidden');
+	PWD.G.AddClass(this.gameover, 'gameover');
+	PWD.G.AddClass(this.gameover, 'hidden');
 	
 	this.restartbutton = document.createElement('button');
 	this.restartbutton.appendChild(document.createTextNode('Starta om'));
-	GEN.AddClass(this.restartbutton, 'memoryrestart');
-	GEN.AddClass(this.restartbutton, 'hidden');
-	GEN.Bind(this.restartbutton, 'click', function(){
+	PWD.G.AddClass(this.restartbutton, 'memoryrestart');
+	PWD.G.AddClass(this.restartbutton, 'hidden');
+	PWD.G.Bind(this.restartbutton, 'click', function(){
 		self.RestartMemory();
 	});
 	
@@ -96,7 +95,7 @@ Memory.prototype.CreateGameOver = function(){
 	this.wrap.appendChild(this.restartbutton);
 };
 
-Memory.prototype.CreateMemoryTiles = function(){
+PWD.Memory.prototype.CreateMemoryTiles = function(){
 	var i, self, fragment, row, col, tile, tileImg;
 	self = this;
 	fragment = document.createDocumentFragment();
@@ -110,12 +109,12 @@ Memory.prototype.CreateMemoryTiles = function(){
 		tile.setAttribute('href', '#');
 		tile.setAttribute('data-id', i);
 		tileImg = document.createElement('img');
-		tileImg.setAttribute('src', 'script/memory/pics/0.png');
+		tileImg.setAttribute('src', 'PWD/memory/pics/0.png');
 		tile.appendChild(tileImg);
 		
-		GEN.Bind(tile, 'click', function(e){
-			GEN.StopProp(e);
-			GEN.PrevDef(e);
+		PWD.G.Bind(tile, 'click', function(e){
+			PWD.G.StopProp(e);
+			PWD.G.PrevDef(e);
 			self.CheckClick(this);
 		});
 		
@@ -129,7 +128,7 @@ Memory.prototype.CreateMemoryTiles = function(){
 	this.table.appendChild(fragment);
 };
 
-Memory.prototype.CheckClick = function(target){
+PWD.Memory.prototype.CheckClick = function(target){
 	var self, id, aTiles, firstTile, thisTile, clickedTile;
 	self		= this;
 	id			= target.getAttribute('data-id');
@@ -139,7 +138,7 @@ Memory.prototype.CheckClick = function(target){
 		if(clickedTile.clickable){
 			this.clickCount += 1;
 			clickedTile.clickable = false;
-			clickedTile.elem.firstChild.setAttribute('src', 'script/memory/pics/' + clickedTile.value + '.png');
+			clickedTile.elem.firstChild.setAttribute('src', 'PWD/memory/pics/' + clickedTile.value + '.png');
 			
 			if(this.clickCount === 1){
 				this.firstClickId = id;
@@ -151,8 +150,8 @@ Memory.prototype.CheckClick = function(target){
 					setTimeout(function(){
 						clickedTile.clickable = true;
 						firstTile.clickable = true;
-						clickedTile.elem.firstChild.setAttribute('src', 'script/memory/pics/0.png');
-						firstTile.elem.firstChild.setAttribute('src', 'script/memory/pics/0.png');
+						clickedTile.elem.firstChild.setAttribute('src', 'PWD/memory/pics/0.png');
+						firstTile.elem.firstChild.setAttribute('src', 'PWD/memory/pics/0.png');
 						self.clickCount = 0;
 					}, 1000);
 				}
@@ -171,25 +170,25 @@ Memory.prototype.CheckClick = function(target){
 	}
 };
 
-Memory.prototype.ShowGameOver = function(){
+PWD.Memory.prototype.ShowGameOver = function(){
 	var self = this;
 	this.gameover.innerHTML = 'Grattis! du klarade spelet på ' + this.guessCount + ' försök';
-	GEN.RemoveClass(this.gameover, 'hidden');
-	GEN.AddClass(this.gameover, 'visible');
-	GEN.RemoveClass(this.restartbutton, 'hidden');
-	GEN.AddClass(this.restartbutton, 'visible');
+	PWD.G.RemoveClass(this.gameover, 'hidden');
+	PWD.G.AddClass(this.gameover, 'visible');
+	PWD.G.RemoveClass(this.restartbutton, 'hidden');
+	PWD.G.AddClass(this.restartbutton, 'visible');
 };
 
-Memory.prototype.UpdateScoreBoard = function(){
+PWD.Memory.prototype.UpdateScoreBoard = function(){
 	this.scoreboardguesses.innerHTML = 'Antal försök: ' + this.guessCount;
 	this.scoreboardpairs.innerHTML = 'Antal par: ' + (((this.memoryrows * this.memorycols) - this.score) / 2) + '/' + ((this.memoryrows * this.memorycols) / 2);
 };
 
-Memory.prototype.RestartMemory = function(){
+PWD.Memory.prototype.RestartMemory = function(){
 	this.StartGame();
 };
 
-var RandomGenerator = {
+PWD.Memory.RandomGenerator = {
 	
 	/*
 		Denna metod tar antalet rader och columner som inparameter.

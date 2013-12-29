@@ -1,13 +1,11 @@
 "use strict";
 
-PWD.Gallery = function(id){
+PWD.Gallery = function(){
 	var self;
 	self = this;
 	PWD.Win.call(this);
 	
-	this.zindex = id + 1;
 	this.type = 'Gallery';
-	this.id = id;
 	this.resizeable = true;
 	
 	this.CreateWindow();
@@ -113,8 +111,5 @@ PWD.Gallery.prototype.CreateImageThumb = function(i){
 };
 
 PWD.Gallery.prototype.ShowImage = function(i){
-	PWD.windows.push(new GalleryImage(PWD.windows.length, this.images[i]));
-	PWD.PositionWindow(PWD.windows[PWD.windows.length-1]);
-	PWD.menuicons.gallery.windows.push(PWD.windows.length-1);
-	PWD.CreateIconList(PWD.menuicons.gallery);
+	PWD.StartApp('GalleryImage', this.images[i]);
 };
