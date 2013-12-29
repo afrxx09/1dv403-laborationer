@@ -1,5 +1,5 @@
 "use strict";
-
+/*
 function GalleryImage(id,img){
 	var self;
 	self = this;
@@ -34,3 +34,4 @@ GalleryImage.prototype.InsertImage = function(){
 	wrap.appendChild(img);
 	this.windowcontent.appendChild(wrap);
 }
+*/

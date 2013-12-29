@@ -1,42 +1,45 @@
 "use strict";
 
-function Gallery(id){
+PWD.Gallery = function(id){
 	var self;
 	self = this;
-	Win.call(this);
+	PWD.Win.call(this);
 	
-	this.zIndex = id + 1;
-	this.type = 'gallery';
-	this.resizeable = true;
+	this.zindex = id + 1;
+	this.type = 'Gallery';
 	this.id = id;
+	this.resizeable = true;
 	
 	this.CreateWindow();
 	this.AddTitleBarText('Gallery');
-	this.CreateTitleBarIcon('images/gallery16.png');
+	this.CreateTitleBarIcon('PWD/gallery/gallery16.png');
 	this.AddStatusBarText('Loading Gallery');
 	this.setSize(400, 400);
+	
 	
 	this.ajaxurl = 'http://homepage.lnu.se/staff/tstjo/labbyServer/imgviewer/';
 	this.gallery = null;
 	this.table = null;
+	this.images = [];
+	
 	this.imagemaxwidth = 0;
 	this.imagemaxheight = 0;
-	this.images = [];
 	
 	this.CreateGallery();
 	this.LoadGallery();
 }
-GEN.InheritPrototype(Gallery, Win);
 
-Gallery.prototype.CreateGallery = function(){
+PWD.G.InheritPrototype(PWD.Gallery, PWD.Win);
+
+PWD.Gallery.prototype.CreateGallery = function(){
 	this.gallery = document.createElement('div');
-	GEN.AddClass(this.gallery, 'gallery');
+	PWD.G.AddClass(this.gallery, 'gallery');
 	this.table = document.createElement('table');
 	this.gallery.appendChild(this.table);
 	this.windowcontent.appendChild(this.gallery);
 };
 
-Gallery.prototype.LoadGallery = function(){
+PWD.Gallery.prototype.LoadGallery = function(){
 	var self = this;
 	this.ShowLoading();
 	this.o = {
@@ -45,10 +48,10 @@ Gallery.prototype.LoadGallery = function(){
 		t : self,
 		f : 'json'
 	};
-	GEN.Ajax(this.o);
+	PWD.G.Ajax(this.o);
 };
 
-Gallery.prototype.LoadGalleryDone = function(json){
+PWD.Gallery.prototype.LoadGalleryDone = function(json){
 	this.images = json;
 	this.HideLoading();
 	this.AddStatusBarText(this.images.length + ' bilder lästes in');
@@ -57,7 +60,7 @@ Gallery.prototype.LoadGalleryDone = function(json){
 	this.CreateTableContent();
 };
 
-Gallery.prototype.GetImageMaxSizes = function(){
+PWD.Gallery.prototype.GetImageMaxSizes = function(){
 	var i;
 	for(i = 0; i < this.images.length; i++){
 		this.imagemaxheight = (this.images[i].thumbHeight > this.imagemaxheight) ? this.images[i].thumbHeight : this.imagemaxheight;
@@ -65,8 +68,8 @@ Gallery.prototype.GetImageMaxSizes = function(){
 	}
 };
 
-Gallery.prototype.CreateTableContent = function(){
-	var i, self, row, td, img;
+PWD.Gallery.prototype.CreateTableContent = function(){
+	var i, row, td, img;
 	for(i = 0; i < this.images.length; i++){
 		if(i % 3 === 0){
 			row = document.createElement('tr');
@@ -77,7 +80,7 @@ Gallery.prototype.CreateTableContent = function(){
 	}
 };
 
-Gallery.prototype.AddImageToGallery = function(i){
+PWD.Gallery.prototype.AddImageToGallery = function(i){
 	var td, wrap, thumb;
 	thumb = this.CreateImageThumb(i);
 	wrap = this.CreateImageWrap(i);
@@ -87,29 +90,29 @@ Gallery.prototype.AddImageToGallery = function(i){
 	return td;
 };
 
-Gallery.prototype.CreateImageWrap = function(i){
+PWD.Gallery.prototype.CreateImageWrap = function(i){
 	var self, wrap;
 	self = this;
 	wrap = document.createElement('div');
 	wrap.setAttribute('rel', i);
-	GEN.Bind(wrap, 'click', function(e){
-		GEN.StopProp(e);
+	PWD.G.Bind(wrap, 'click', function(e){
+		PWD.G.StopProp(e);
 		var index = parseInt(this.getAttribute('rel'));
 		self.ShowImage(index);
 	});
 	wrap.style.width = this.imagemaxwidth + 'px';
 	wrap.style.height = this.imagemaxheight + 'px';
-	GEN.AddClass(wrap, 'thumbwrap');
+	PWD.G.AddClass(wrap, 'thumbwrap');
 	return wrap;
 };
 
-Gallery.prototype.CreateImageThumb = function(i){
+PWD.Gallery.prototype.CreateImageThumb = function(i){
 	var thumb = document.createElement('img');
 	thumb.setAttribute('src', this.images[i].thumbURL);
 	return thumb;
 };
 
-Gallery.prototype.ShowImage = function(i){
+PWD.Gallery.prototype.ShowImage = function(i){
 	PWD.windows.push(new GalleryImage(PWD.windows.length, this.images[i]));
 	PWD.PositionWindow(PWD.windows[PWD.windows.length-1]);
 	PWD.menuicons.gallery.windows.push(PWD.windows.length-1);
