@@ -6,6 +6,10 @@ var PWD = {
 	height : 0,
 	desktop : null,
 	menu : null,
+	dialogbackground : null,
+	dialogbody : null,
+	dialogcallback : null,
+	dialogsubmit : null,
 	windows : [],
 	winpostop : 0,
 	winposleft : 0,
@@ -28,6 +32,10 @@ var PWD = {
 	
 	Init : function(o){
 		this.opt = o;
+		this.dialogbackground = document.getElementById('dialogbackground');
+		this.dialogbody = document.getElementById('dialogbody');
+		this.dialogsubmit = document.getElementById('dialogsubmit');
+		
 		this.CreateDesktop();
 		this.CreateMenu();
 		this.UpdateSize();
@@ -37,6 +45,12 @@ var PWD = {
 	
 	Bind : function(){
 		var self = this;
+		this.G.Bind(this.dialogsubmit, 'click', function(){
+			if(self.dialogcallback !== null){
+				self.dialogcallback();
+			}
+			self.HideDialog();
+		});
 		this.G.Bind(window, 'resize', function(){
 			self.UpdateSize();
 		});
@@ -256,6 +270,16 @@ var PWD = {
 	
 	SetBackgroundImage : function(url){
 		this.desktop.style.backgroundImage = 'url(' + url + ')';
+	},
+	
+	ShowDialog : function(){
+		this.G.RemoveClass(this.dialogbackground, 'hidden');
+		this.G.AddClass(this.dialogbackground, 'visible');
+	},
+	
+	HideDialog : function(){
+		this.G.RemoveClass(this.dialogbackground, 'visible');
+		this.G.AddClass(this.dialogbackground, 'hidden');	
 	}
 };
 

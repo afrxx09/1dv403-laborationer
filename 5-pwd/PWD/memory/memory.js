@@ -15,6 +15,13 @@ PWD.Memory = function(){
 	this.ShowLoading();
 	this.setSize(400, 500);
 	
+	this.memorysizes = [
+		{r: 2, c:2},
+		{r: 2, c:3},
+		{r: 2, c:4},
+		{r: 3, c:4},
+		{r: 4, c:4}
+	];
 	this.memoryrows = 4;
 	this.memorycols = 4;
 	this.StartGame = function(){
@@ -40,6 +47,7 @@ PWD.Memory = function(){
 		this.AddStatusBarText(this.memoryrows + 'x' + this.memorycols + 'Memory');
 	}
 	this.StartGame();
+	this.CreateSettings();
 };
 
 PWD.G.InheritPrototype(PWD.Memory, PWD.Win);
@@ -185,6 +193,43 @@ PWD.Memory.prototype.UpdateScoreBoard = function(){
 };
 
 PWD.Memory.prototype.RestartMemory = function(){
+	this.StartGame();
+};
+
+PWD.Memory.prototype.CreateSettings = function(){
+	var self, arr;
+	self = this;
+	arr = [
+		{
+			name : 'Starta om',
+			cb : function(){self.RestartMemory();}
+		},
+		{
+			name : 'Ändra storlek',
+			cb : function(){self.ChangeMemorySize();}
+		}
+	];
+	this.contextmenu.AddMenuGroup('Inställningar', arr);
+};
+
+PWD.Memory.prototype.ChangeMemorySize = function(){
+	var i, self, select, options;
+	self = this;
+	for(i = 0; i < this.memorysizes.length; i++){
+		options += '<option value="' + i + '">' + this.memorysizes[i].r + ' x ' + this.memorysizes[i].c + '</option>';
+	}
+	select = '<label for="selMemorySize" style="margin-right:10px;">Välj storlek</label><select id="selMemorySize">' + options +'</select>';
+	PWD.dialogbody.innerHTML = select;
+	PWD.ShowDialog();
+	PWD.dialogcallback = function(){
+		var val = document.getElementById('selMemorySize').value;
+		self.SaveMemorySize(val);
+	};
+};
+
+PWD.Memory.prototype.SaveMemorySize = function(v){
+	this.memoryrows = this.memorysizes[v].r;
+	this.memorycols = this.memorysizes[v].c;
 	this.StartGame();
 };
 
