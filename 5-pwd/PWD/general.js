@@ -72,7 +72,7 @@ PWD.G = {
 	},
 	
 	Ajax : function(o){
-		var xhr, opt, r, json;
+		var xhr, opt, r, json, xml;
 		if(!o.url){
 			return false; 
 		}
@@ -83,30 +83,55 @@ PWD.G = {
 				async : (!o.async) ? true : o.async,
 				cb : (!o.cb) ? null : o.cb,
 				t : (!o.t) ? this : o.t,
-				f : (!o.f) ? 'json' : o.f
+				f : (!o.f) ? 'json' : o.f,
+				d : (!o.d) ? null : o.d
 			};
 			
 			xhr = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
 			xhr.onreadystatechange = function(){
 				if(xhr.readyState == 4){
 					if((xhr.status >= 200 && xhr.status < 300) || xhr.status == 304){
-						r = xhr.responseText;
+						
 						if(!o.cb !== true){
-							if(o.f != 'json'){
-								if(!o.t !== true){
-									o.cb.call(o.t, r);
-								}
-								else{
-									o.cb(r);
-								}
-							}
-							else{
-								json = JSON.parse(r);
+							if(o.f == 'json'){
+								json = JSON.parse(xhr.responseText);
 								if(!o.t !== true){
 									o.cb.call(o.t, json);
 								}
 								else{
 									o.cb(json);
+								}
+							}
+							else if(o.f == 'xml'){
+								if(xhr.responseXML){
+									xml = xhr.responseXML;
+								}
+								else{
+									if(window.DOMParser){
+										xml = new DOMParser();
+										xml = xml.parseFromString(xhr.responseText,"text/xml");
+									}
+									else{
+										xml=new ActiveXObject("Microsoft.XMLDOM");
+										xml.async=false;
+										xml.loadXML(xhr.responseText); 
+									}
+								}
+								
+								if(!o.t !== true){
+									o.cb.call(o.t, xml);
+								}
+								else{
+									o.cb(xml);
+								}
+							}
+							else{
+								r = xhr.responseText;
+								if(!o.t !== true){
+									o.cb.call(o.t, r);
+								}
+								else{
+									o.cb(r);
 								}
 							}
 						}
@@ -119,7 +144,13 @@ PWD.G = {
 				}
 			};
 			xhr.open(opt.m, opt.url, opt.async);
-			xhr.send(null);
+			if(xhr.withCredentials){
+				xhr.withCredentials = true;
+			}
+			if(o.m == 'post'){
+				xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+			}
+			xhr.send(opt.d);
 		}
 	},
 	
@@ -133,5 +164,24 @@ PWD.G = {
 		var prototype = PWD.G.Obj(sup.prototype);
 		prototype.constructor = sub;
 		sub.prototype = prototype;
+	},
+	
+	SetCookie : function(cname,cvalue,exdays){
+		var d, expires;
+		d = new Date();
+		d.setTime(d.getTime()+(exdays*24*60*60*1000));
+		expires = "expires="+d.toGMTString();
+		document.cookie = cname + "=" + cvalue + "; " + expires;
+	},
+
+	GetCookie : function(cname){
+		var name, ca, c;
+		name = cname + "=";
+		ca = document.cookie.split(';');
+		for(var i=0; i<ca.length; i++) {
+			c = ca[i].trim();
+			if (c.indexOf(name)==0) return c.substring(name.length,c.length);
+		}
+		return "";
 	}
 };

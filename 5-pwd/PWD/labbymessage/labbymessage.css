@@ -1,0 +1,58 @@
+.labby{
+	height:inherit;
+	overflow:auto;
+}
+
+.labby .messagecontainer{
+	padding:10px;
+}
+
+.labby .messageform{
+	padding:10px;
+}
+
+.labby .message{
+	display:block;
+	width:100%;
+	margin-bottom:0.6em;
+	font-size:0.9em;
+}
+
+.labby .message .head{
+	width:100%;
+	background-color:#ccc;
+}
+.labby .message .body{
+	width:100%;
+	background-color:#eee;
+}
+.labby .message .id{
+	font-weight:bold;
+}
+.labby .message .text{
+	
+}
+.labby .message .author{
+	font-weight:bold;
+}
+.labby .message .date{
+	float:right;
+	font-style:italic;
+	font-size:0.7em;
+	margin-right:3px;
+}
+
+.labby .sendbutton{
+	float:right;
+	border:1px solid #000;
+	padding:5px 20px;
+	margin:5px auto;
+	background:#d6d6d6;
+	color:#000;
+	font-weight:bold;
+}
+
+.labby .sendbutton:hover{
+	background:#0c3;
+	color:#fff;
+}

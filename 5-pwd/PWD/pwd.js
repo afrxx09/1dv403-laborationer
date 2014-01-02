@@ -285,7 +285,7 @@ var PWD = {
 
 window.onload = function(){
 	var o = {
-		apps : ['Gallery', 'Memory', 'RSS']
+		apps : ['Gallery', 'Memory', 'RSS', 'LabbyMessage']
 	};
 	PWD.Init(o);
 };
