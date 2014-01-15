@@ -49,12 +49,14 @@ PWD.RSS.prototype.LoadRSS = function(){
 		url : self.rssurl + escape(this.currentfeed),
 		cb : self.LoadRSSDone,
 		t : self,
-		f : 'text'
+		f : 'text',
+		c : true
 	};
 	PWD.G.Ajax(this.o);
 };
 
 PWD.RSS.prototype.LoadRSSDone = function(r){
+	console.log(r);
 	var d, h, m ,s;
 	d = new Date();
 	h = (d.getHours() < 10 ) ? '0' + d.getHours() : d.getHours();

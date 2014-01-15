@@ -44,7 +44,8 @@ PWD.Gallery.prototype.LoadGallery = function(){
 		url : self.ajaxurl,
 		cb : this.LoadGalleryDone,
 		t : self,
-		f : 'json'
+		f : 'json',
+		c : true
 	};
 	PWD.G.Ajax(this.o);
 };

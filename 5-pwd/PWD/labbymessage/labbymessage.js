@@ -5,7 +5,7 @@ PWD.LabbyMessage = function(){
 	self = this;
 	PWD.Win.call(this);
 	
-	this.type = 'Labby';
+	this.type = 'LabbyMessage';
 	this.resizeable = true;
 	
 	this.CreateWindow();
@@ -72,6 +72,7 @@ PWD.LabbyMessage.prototype.CreateForm = function(){
 };
 
 PWD.LabbyMessage.prototype.CreateTextArea = function(){
+	var self = this;
 	this.textarea = document.createElement('textarea');
 	PWD.G.AddClass(this.textarea, 'textarea');
 	this.messageform.appendChild(this.textarea);
@@ -115,7 +116,8 @@ PWD.LabbyMessage.prototype.GetMessages = function(){
 		url : self.geturl + escape(this.messagecount),
 		cb : self.GetMessagesDone,
 		t : self,
-		f : 'xml'
+		f : 'xml',
+		c : true
 	};
 	PWD.G.Ajax(this.o);
 };
@@ -160,7 +162,7 @@ PWD.LabbyMessage.prototype.RenderMessages = function(){
 PWD.LabbyMessage.prototype.PostMessage = function(){
 	var self;
 	self = this;
-	this.sendbutton.innerHTML = 'skickar...';
+	
 	this.ShowLoading();
 	this.o = {
 		m : 'post',
@@ -168,8 +170,11 @@ PWD.LabbyMessage.prototype.PostMessage = function(){
 		cb : self.PostMessageDone,
 		t : self,
 		f : 'text',
+		c : true,
 		d : 'text=' + encodeURIComponent(this.textarea.value) + '&username=' + encodeURIComponent(this.username)
 	};
+	this.textarea.value = '';
+	this.sendbutton.innerHTML = 'skickar...';
 	PWD.G.Ajax(this.o);
 };
 

@@ -21,7 +21,7 @@ var PWD = {
 		startw : 0,
 		starth : 0
 	},
-	move 		:{
+	move : {
 		active : false,
 		win : null,
 		startx : 0,
@@ -51,13 +51,16 @@ var PWD = {
 			}
 			self.HideDialog();
 		});
+		
 		this.G.Bind(window, 'resize', function(){
 			self.UpdateSize();
 		});
+		
 		this.G.Bind(document.body, 'mouseup', function(e){
 			PWD.StopResize();
 			PWD.StopMove();
 		});
+		
 		this.G.Bind(document.body, 'mousemove', function(e){
 			if(self.resize.active){
 				var t, w, h, dx, dy;
